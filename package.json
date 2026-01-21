@@ -1,0 +1,53 @@
+{
+  "name": "@digitalsee/fingerprint",
+  "version": "1.0.0",
+  "description": "Browser fingerprint collection library for DigitalSee IDSS Platform",
+  "keywords": [
+    "fingerprint",
+    "device-fingerprint",
+    "browser-fingerprint",
+    "digitalsee"
+  ],
+  "author": "DigitalSee Team",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "prepublishOnly": "pnpm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "eslint": "^8.56.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digitalsee/fingerprint.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

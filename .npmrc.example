@@ -1,0 +1,6 @@
+# 如果使用私有 npm 仓库，取消注释并配置以下内容：
+# registry=https://your-private-registry.com/
+# //your-private-registry.com/:_authToken=YOUR_AUTH_TOKEN
+
+# 如果使用公共 npm 仓库，保持默认即可
+# registry=https://registry.npmjs.org/
