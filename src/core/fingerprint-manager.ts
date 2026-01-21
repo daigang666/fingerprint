@@ -27,7 +27,7 @@ export class FingerprintManager {
     this.config = {
       cacheExpiry: config.cacheExpiry ?? DEFAULT_CACHE_EXPIRY,
       enableIndexedDB: config.enableIndexedDB ?? true,
-      storageKeyPrefix: config.storageKeyPrefix ?? '',
+      storageKeyPrefix: config.storageKeyPrefix ?? 'df',
       version: config.version ?? CURRENT_VERSION,
     };
 

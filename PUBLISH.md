@@ -1,11 +1,11 @@
-# @digitalsee/fingerprint 发布指南
+# @gangdai/fingerprint 发布指南
 
 ## 发布前准备
 
 ### 1. 安装依赖
 
 ```bash
-cd digitalsee-fingerprint
+cd gangdai-fingerprint
 pnpm install
 ```
 
@@ -36,15 +36,15 @@ pnpm run type-check
 在发布前，可以在本地测试包是否正常工作：
 
 ```bash
-# 在 digitalsee-fingerprint 目录
+# 在 gangdai-fingerprint 目录
 pnpm link --global
 
 # 在 IAM-Login 目录
 cd ../IAM-Login
-pnpm link --global @digitalsee/fingerprint
+pnpm link --global @gangdai/fingerprint
 
 # 测试完成后取消链接
-pnpm unlink --global @digitalsee/fingerprint
+pnpm unlink --global @gangdai/fingerprint
 ```
 
 ## 发布到 npm
@@ -80,7 +80,7 @@ npm publish
 创建或编辑 `.npmrc` 文件：
 
 ```bash
-# 在 digitalsee-fingerprint 目录创建 .npmrc
+# 在 gangdai-fingerprint 目录创建 .npmrc
 registry=https://your-private-registry.com/
 //your-private-registry.com/:_authToken=YOUR_AUTH_TOKEN
 ```
@@ -172,18 +172,18 @@ git push && git push --tags
 
 ```bash
 # 在 IAM-Console、IAM-Portal、IAM-Tenant 等项目中
-pnpm add @digitalsee/fingerprint
+pnpm add @gangdai/fingerprint
 
 # 如果是私有仓库，需要先配置 registry
 pnpm config set registry https://your-private-registry.com/
-pnpm add @digitalsee/fingerprint
+pnpm add @gangdai/fingerprint
 ```
 
 ### 2. 使用示例
 
 ```typescript
 // 在任何项目中导入
-import { getFingerprint, HTTP_HEADER_NAME } from '@digitalsee/fingerprint';
+import { getFingerprint, HTTP_HEADER_NAME } from '@gangdai/fingerprint';
 
 // 在 HTTP 拦截器中使用
 axios.interceptors.request.use(async (config) => {
@@ -205,13 +205,13 @@ npm ERR! 403 Forbidden
 **解决方案**：
 1. 确认已登录：`npm whoami`
 2. 检查包名是否已被占用
-3. 如果是 scoped package（@digitalsee/xxx），确保使用 `--access public`
+3. 如果是 scoped package（@gangdai/xxx），确保使用 `--access public`
 
 ### Q2: 包名冲突
 
-如果 `@digitalsee/fingerprint` 已被占用，可以修改为：
-- `@digitalsee/device-fingerprint`
-- `@digitalsee/browser-fingerprint`
+如果 `@gangdai/fingerprint` 已被占用，可以修改为：
+- `@gangdai/device-fingerprint`
+- `@gangdai/browser-fingerprint`
 - `@your-company/fingerprint`
 
 修改 `package.json` 中的 `name` 字段即可。
@@ -220,10 +220,10 @@ npm ERR! 403 Forbidden
 
 ```bash
 # 撤销指定版本（24小时内）
-npm unpublish @digitalsee/fingerprint@1.0.0
+npm unpublish @gangdai/fingerprint@1.0.0
 
 # 撤销整个包（慎用）
-npm unpublish @digitalsee/fingerprint --force
+npm unpublish @gangdai/fingerprint --force
 ```
 
 **注意**：npm 不允许撤销发布超过 24 小时的版本。
@@ -239,7 +239,7 @@ npm version prerelease --preid=beta
 npm publish --tag beta
 
 # 用户安装 beta 版本
-pnpm add @digitalsee/fingerprint@beta
+pnpm add @gangdai/fingerprint@beta
 ```
 
 ## 持续集成（可选）
@@ -287,9 +287,3 @@ jobs:
 3. **编写 CHANGELOG**：记录每个版本的变更
 4. **添加测试**：确保代码质量
 5. **版本规划**：提前规划主要版本的功能
-
-## 联系方式
-
-如有问题，请联系：
-- 邮箱：your-email@digitalsee.com
-- 内部文档：https://your-internal-docs.com

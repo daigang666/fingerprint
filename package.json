@@ -1,14 +1,19 @@
 {
-  "name": "@digitalsee/fingerprint",
+  "name": "@gangdai/fingerprint",
   "version": "1.0.0",
-  "description": "Browser fingerprint collection library for DigitalSee IDSS Platform",
+  "description": "A lightweight, zero-dependency browser fingerprint collection library with TypeScript support",
   "keywords": [
     "fingerprint",
     "device-fingerprint",
     "browser-fingerprint",
-    "digitalsee"
+    "device-identification",
+    "canvas-fingerprint",
+    "webgl-fingerprint",
+    "audio-fingerprint",
+    "browser-detection",
+    "typescript"
   ],
-  "author": "DigitalSee Team",
+  "author": "Gang Dai <gang.dai@qq.com>",
   "license": "MIT",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -45,7 +50,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/digitalsee/fingerprint.git"
+    "url": "https://github.com/daigang666/fingerprint.git"
+  },
+  "homepage": "https://github.com/daigang666/fingerprint#readme",
+  "bugs": {
+    "url": "https://github.com/daigang666/fingerprint/issues"
   },
   "publishConfig": {
     "access": "public"

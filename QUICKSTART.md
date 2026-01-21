@@ -1,9 +1,9 @@
-# @digitalsee/fingerprint 快速开始
+# @gangdai/fingerprint 快速开始
 
 ## 项目结构
 
 ```
-digitalsee-fingerprint/
+gangdai-fingerprint/
 ├── src/                    # 源代码
 │   ├── collectors/         # 特征采集器
 │   ├── core/              # 核心逻辑
@@ -29,7 +29,7 @@ digitalsee-fingerprint/
 ### 1. 安装依赖
 
 ```bash
-cd digitalsee-fingerprint
+cd gangdai-fingerprint
 pnpm install
 ```
 
@@ -86,13 +86,13 @@ npm publish --access public
 ### 安装
 
 ```bash
-pnpm add @digitalsee/fingerprint
+pnpm add @gangdai/fingerprint
 ```
 
 ### 使用
 
 ```typescript
-import { getFingerprint, HTTP_HEADER_NAME } from '@digitalsee/fingerprint';
+import { getFingerprint, HTTP_HEADER_NAME } from '@gangdai/fingerprint';
 
 // 获取指纹
 const fingerprint = await getFingerprint();
@@ -113,8 +113,8 @@ axios.post('/api/login', data, {
 
 ### 简要步骤
 
-1. 安装包：`pnpm add @digitalsee/fingerprint`
-2. 更新导入：`'src/utils/fingerprint'` → `'@digitalsee/fingerprint'`
+1. 安装包：`pnpm add @gangdai/fingerprint`
+2. 更新导入：`'src/utils/fingerprint'` → `'@gangdai/fingerprint'`
 3. 删除旧代码：`rm -rf src/utils/fingerprint`
 
 ## 常见问题

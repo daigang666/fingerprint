@@ -1,4 +1,4 @@
-# IAM-Login 迁移到 @digitalsee/fingerprint 指南
+# IAM-Login 迁移到 @gangdai/fingerprint 指南
 
 ## 迁移步骤
 
@@ -6,7 +6,7 @@
 
 ```bash
 cd IAM-Login
-pnpm add @digitalsee/fingerprint
+pnpm add @gangdai/fingerprint
 ```
 
 ### 2. 更新导入语句
@@ -18,7 +18,7 @@ import { getFingerprint, HTTP_HEADER_NAME } from 'src/utils/fingerprint';
 
 **修改后：**
 ```typescript
-import { getFingerprint, HTTP_HEADER_NAME } from '@digitalsee/fingerprint';
+import { getFingerprint, HTTP_HEADER_NAME } from '@gangdai/fingerprint';
 ```
 
 ### 3. 删除旧的 fingerprint 模块
@@ -42,7 +42,7 @@ import { getFingerprint, HTTP_HEADER_NAME } from 'src/utils/fingerprint';
 
 **修改后：**
 ```typescript
-import { getFingerprint, HTTP_HEADER_NAME } from '@digitalsee/fingerprint';
+import { getFingerprint, HTTP_HEADER_NAME } from '@gangdai/fingerprint';
 ```
 
 ### 5. 验证修改
@@ -70,13 +70,13 @@ pnpm build
 
 ```bash
 # 在各项目目录
-pnpm add @digitalsee/fingerprint
+pnpm add @gangdai/fingerprint
 ```
 
 然后在需要的地方导入：
 
 ```typescript
-import { getFingerprint, HTTP_HEADER_NAME } from '@digitalsee/fingerprint';
+import { getFingerprint, HTTP_HEADER_NAME } from '@gangdai/fingerprint';
 
 // 在 HTTP 拦截器中使用
 axios.interceptors.request.use(async (config) => {
@@ -92,11 +92,11 @@ axios.interceptors.request.use(async (config) => {
 
 ```bash
 # 1. 卸载新包
-pnpm remove @digitalsee/fingerprint
+pnpm remove @gangdai/fingerprint
 
 # 2. 恢复旧代码
 mv src/utils/fingerprint.backup src/utils/fingerprint
 
 # 3. 恢复导入语句
-# 将 '@digitalsee/fingerprint' 改回 'src/utils/fingerprint'
+# 将 '@gangdai/fingerprint' 改回 'src/utils/fingerprint'
 ```

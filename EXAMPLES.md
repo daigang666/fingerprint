@@ -7,7 +7,7 @@
 ```typescript
 // src/utils/http-client.ts
 import axios from 'axios';
-import { getFingerprint, HTTP_HEADER_NAME } from '@digitalsee/fingerprint';
+import { getFingerprint, HTTP_HEADER_NAME } from '@gangdai/fingerprint';
 
 const httpClient = axios.create({
   baseURL: '/api',
@@ -35,7 +35,7 @@ export default httpClient;
 ```typescript
 // src/requestErrorConfig.ts
 import { RequestConfig } from '@umijs/max';
-import { getFingerprint, HTTP_HEADER_NAME } from '@digitalsee/fingerprint';
+import { getFingerprint, HTTP_HEADER_NAME } from '@gangdai/fingerprint';
 
 export const request: RequestConfig = {
   requestInterceptors: [
@@ -66,7 +66,7 @@ export const request: RequestConfig = {
 ```typescript
 // src/pages/Login/index.tsx
 import { useState } from 'react';
-import { getFingerprint, HTTP_HEADER_NAME } from '@digitalsee/fingerprint';
+import { getFingerprint, HTTP_HEADER_NAME } from '@gangdai/fingerprint';
 import { login } from '@/services/auth';
 
 export default function LoginPage() {
@@ -106,7 +106,7 @@ export default function LoginPage() {
 
 ```typescript
 // src/app.tsx (UmiJS)
-import { initFingerprint } from '@digitalsee/fingerprint';
+import { initFingerprint } from '@gangdai/fingerprint';
 
 // 应用初始化时配置指纹模块
 export async function getInitialState() {
@@ -129,7 +129,7 @@ export async function getInitialState() {
 ```typescript
 // src/components/DeviceInfo.tsx
 import { useEffect, useState } from 'react';
-import { getDeviceFingerprint, FingerprintResult } from '@digitalsee/fingerprint';
+import { getDeviceFingerprint, FingerprintResult } from '@gangdai/fingerprint';
 
 export default function DeviceInfo() {
   const [fingerprint, setFingerprint] = useState<FingerprintResult | null>(null);
@@ -170,7 +170,7 @@ export default function DeviceInfo() {
 ```typescript
 // src/composables/useFingerprint.ts
 import { ref, onMounted } from 'vue';
-import { getDeviceFingerprint, type FingerprintResult } from '@digitalsee/fingerprint';
+import { getDeviceFingerprint, type FingerprintResult } from '@gangdai/fingerprint';
 
 export function useFingerprint() {
   const fingerprint = ref<FingerprintResult | null>(null);
@@ -225,7 +225,7 @@ const { fingerprint, loading, error, refresh } = useFingerprint();
 
 ```typescript
 // src/utils/fingerprint-singleton.ts
-import { getFingerprint, initFingerprint } from '@digitalsee/fingerprint';
+import { getFingerprint, initFingerprint } from '@gangdai/fingerprint';
 
 class FingerprintService {
   private static instance: FingerprintService;
@@ -291,7 +291,7 @@ const fingerprint = await fingerprintService.getFingerprint();
 
 ```typescript
 // src/utils/fingerprint-with-fallback.ts
-import { getFingerprint } from '@digitalsee/fingerprint';
+import { getFingerprint } from '@gangdai/fingerprint';
 
 /**
  * 获取指纹，失败时返回固定值
@@ -330,7 +330,7 @@ export async function getFingerprintWithRetry(
 
 ```typescript
 // src/utils/fingerprint-monitor.ts
-import { getDeviceFingerprint } from '@digitalsee/fingerprint';
+import { getDeviceFingerprint } from '@gangdai/fingerprint';
 
 export async function getFingerprintWithMonitoring() {
   const startTime = performance.now();
@@ -358,14 +358,14 @@ export async function getFingerprintWithMonitoring() {
 
 ```typescript
 // src/utils/lazy-fingerprint.ts
-let fingerprintModule: typeof import('@digitalsee/fingerprint') | null = null;
+let fingerprintModule: typeof import('@gangdai/fingerprint') | null = null;
 
 /**
  * 懒加载指纹模块
  */
 export async function loadFingerprintModule() {
   if (!fingerprintModule) {
-    fingerprintModule = await import('@digitalsee/fingerprint');
+    fingerprintModule = await import('@gangdai/fingerprint');
   }
   return fingerprintModule;
 }
@@ -384,7 +384,7 @@ export async function getFingerprintLazy(): Promise<string> {
 ```typescript
 // src/store/fingerprintSlice.ts
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getDeviceFingerprint, type FingerprintResult } from '@digitalsee/fingerprint';
+import { getDeviceFingerprint, type FingerprintResult } from '@gangdai/fingerprint';
 
 interface FingerprintState {
   data: FingerprintResult | null;

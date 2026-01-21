@@ -1,78 +1,78 @@
-# @digitalsee/fingerprint
+# @gangdai/fingerprint
 
-浏览器设备指纹采集库，用于 DigitalSee IDSS 平台的设备识别和安全防护。
+A lightweight, zero-dependency browser fingerprint collection library with full TypeScript support.
 
-## 特性
+## Features
 
-- 🔒 **高精度指纹**：综合多维度特征生成唯一设备标识
-- 💾 **智能缓存**：支持 IndexedDB + LocalStorage 双层缓存，30天有效期
-- 🚀 **轻量高效**：零依赖，体积小，性能优异
-- 📦 **开箱即用**：简洁的 API，支持 TypeScript
-- 🔄 **兜底机制**：采集失败时自动生成 UUID 作为兜底方案
+- 🔒 **High-precision fingerprinting**: Combines multiple dimensions to generate unique device identifiers
+- 💾 **Smart caching**: Dual-layer caching with IndexedDB + LocalStorage, 30-day validity
+- 🚀 **Lightweight & efficient**: Zero dependencies, small bundle size, excellent performance
+- 📦 **Ready to use**: Simple API with full TypeScript support
+- 🔄 **Fallback mechanism**: Automatically generates UUID when collection fails
 
-## 安装
+## Installation
 
 ```bash
-# 使用 pnpm（推荐）
-pnpm add @digitalsee/fingerprint
+# Using pnpm (recommended)
+pnpm add @gangdai/fingerprint
 
-# 使用 npm
-npm install @digitalsee/fingerprint
+# Using npm
+npm install @gangdai/fingerprint
 
-# 使用 yarn
-yarn add @digitalsee/fingerprint
+# Using yarn
+yarn add @gangdai/fingerprint
 ```
 
-## 快速开始
+## Quick Start
 
-### 基础使用
+### Basic Usage
 
 ```typescript
-import { getDeviceFingerprint } from '@digitalsee/fingerprint';
+import { getDeviceFingerprint } from '@gangdai/fingerprint';
 
-// 获取设备指纹
+// Get device fingerprint
 const result = await getDeviceFingerprint();
 console.log(result.fingerprint); // "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
 console.log(result.isFallback);  // false
 console.log(result.timestamp);   // 1705824000000
 ```
 
-### 仅获取指纹字符串
+### Get Fingerprint String Only
 
 ```typescript
-import { getFingerprint } from '@digitalsee/fingerprint';
+import { getFingerprint } from '@gangdai/fingerprint';
 
 const fingerprint = await getFingerprint();
 console.log(fingerprint); // "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
 ```
 
-### 自定义配置
+### Custom Configuration
 
 ```typescript
-import { initFingerprint, getDeviceFingerprint } from '@digitalsee/fingerprint';
+import { initFingerprint, getDeviceFingerprint } from '@gangdai/fingerprint';
 
-// 初始化配置
+// Initialize with custom config
 initFingerprint({
-  cacheExpiry: 7 * 24 * 60 * 60 * 1000,  // 缓存7天
-  enableIndexedDB: true,                  // 启用 IndexedDB
-  storageKeyPrefix: 'myapp',              // 自定义存储键前缀
-  version: 1,                             // 版本号
+  cacheExpiry: 7 * 24 * 60 * 60 * 1000,  // Cache for 7 days
+  enableIndexedDB: true,                  // Enable IndexedDB
+  storageKeyPrefix: 'myapp',              // Custom storage key prefix
+  version: 1,                             // Version number
 });
 
-// 使用配置后的实例
+// Use configured instance
 const result = await getDeviceFingerprint();
 ```
 
-### 在 HTTP 请求中使用
+### Use in HTTP Requests
 
 ```typescript
-import { getFingerprint, HTTP_HEADER_NAME } from '@digitalsee/fingerprint';
+import { getFingerprint, HTTP_HEADER_NAME } from '@gangdai/fingerprint';
 import axios from 'axios';
 
-// 获取指纹
+// Get fingerprint
 const fingerprint = await getFingerprint();
 
-// 在请求头中携带指纹
+// Include fingerprint in request headers
 axios.post('/api/login', data, {
   headers: {
     [HTTP_HEADER_NAME]: fingerprint,  // 'X-Device-Fingerprint'
@@ -80,15 +80,15 @@ axios.post('/api/login', data, {
 });
 ```
 
-### 刷新和清除
+### Refresh and Clear
 
 ```typescript
-import { refreshFingerprint, clearFingerprint } from '@digitalsee/fingerprint';
+import { refreshFingerprint, clearFingerprint } from '@gangdai/fingerprint';
 
-// 强制刷新指纹（重新采集）
+// Force refresh fingerprint (re-collect)
 const newResult = await refreshFingerprint();
 
-// 清除缓存的指纹
+// Clear cached fingerprint
 await clearFingerprint();
 ```
 
@@ -123,7 +123,7 @@ interface FingerprintResult {
 interface FingerprintConfig {
   cacheExpiry?: number;        // 缓存过期时间（毫秒），默认 30 天
   enableIndexedDB?: boolean;   // 是否启用 IndexedDB，默认 true
-  storageKeyPrefix?: string;   // 存储键名前缀，默认 'digitalsee'
+  storageKeyPrefix?: string;   // 存储键名前缀，默认 'df'
   version?: number;            // 版本号，默认 1
 }
 ```
@@ -145,44 +145,44 @@ interface FingerprintConfig {
 ### 常量
 
 ```typescript
-import { HTTP_HEADER_NAME } from '@digitalsee/fingerprint';
+import { HTTP_HEADER_NAME } from '@gangdai/fingerprint';
 
 console.log(HTTP_HEADER_NAME); // 'X-Device-Fingerprint'
 ```
 
-## 采集维度
+## Collection Dimensions
 
-指纹采集包含以下维度：
+The fingerprint collection includes the following dimensions:
 
-- **基础信息**：User Agent、语言、时区、屏幕分辨率、颜色深度
-- **Canvas 指纹**：Canvas 渲染特征
-- **WebGL 指纹**：WebGL 渲染器信息
-- **Audio 指纹**：音频上下文特征
-- **字体检测**：系统安装的字体列表
-- **插件信息**：浏览器插件列表
-- **硬件信息**：CPU 核心数、内存大小、触摸支持
+- **Basic Information**: User Agent, language, timezone, screen resolution, color depth
+- **Canvas Fingerprint**: Canvas rendering characteristics
+- **WebGL Fingerprint**: WebGL renderer information
+- **Audio Fingerprint**: Audio context characteristics
+- **Font Detection**: System installed fonts list
+- **Plugin Information**: Browser plugins list
+- **Hardware Information**: CPU cores, memory size, touch support
 
-## 缓存策略
+## Caching Strategy
 
-1. **优先使用 IndexedDB**：持久化存储，不受隐私模式影响
-2. **降级到 LocalStorage**：IndexedDB 不可用时的备选方案
-3. **30天有效期**：默认缓存30天，可自定义
-4. **版本管理**：支持版本号，便于后续升级
+1. **Prioritize IndexedDB**: Persistent storage, unaffected by private mode
+2. **Fallback to LocalStorage**: Alternative when IndexedDB is unavailable
+3. **30-day validity**: Default cache for 30 days, customizable
+4. **Version management**: Supports version numbers for future upgrades
 
-## 兜底机制
+## Fallback Mechanism
 
-当指纹采集失败时（如隐私模式、权限限制等），会自动生成一个 UUID 作为兜底标识：
+When fingerprint collection fails (e.g., private mode, permission restrictions), a UUID is automatically generated as a fallback identifier:
 
 ```typescript
 const result = await getDeviceFingerprint();
 if (result.isFallback) {
-  console.log('使用兜底 UUID:', result.fingerprint);
+  console.log('Using fallback UUID:', result.fingerprint);
 }
 ```
 
-## TypeScript 支持
+## TypeScript Support
 
-完整的 TypeScript 类型定义：
+Complete TypeScript type definitions:
 
 ```typescript
 import type {
@@ -190,34 +190,34 @@ import type {
   FingerprintConfig,
   CollectorResult,
   CachedFingerprint
-} from '@digitalsee/fingerprint';
+} from '@gangdai/fingerprint';
 ```
 
-## 浏览器兼容性
+## Browser Compatibility
 
 - Chrome 60+
 - Firefox 55+
 - Safari 11+
 - Edge 79+
 
-## 注意事项
+## Important Notes
 
-1. **隐私合规**：使用前请确保符合当地隐私法规（如 GDPR、CCPA）
-2. **用户告知**：建议在隐私政策中说明设备指纹的使用目的
-3. **不可作为唯一标识**：建议结合其他认证手段使用
-4. **缓存清理**：用户清除浏览器数据会导致指纹重新生成
+1. **Privacy Compliance**: Ensure compliance with local privacy regulations (e.g., GDPR, CCPA) before use
+2. **User Notification**: Recommend explaining the use of device fingerprinting in your privacy policy
+3. **Not a Sole Identifier**: Recommend using in combination with other authentication methods
+4. **Cache Clearing**: Users clearing browser data will cause fingerprint regeneration
 
-## 使用场景
+## Use Cases
 
-- 🔐 **登录安全**：检测异常登录行为
-- 🛡️ **风控防护**：识别恶意设备和刷单行为
-- 📊 **用户分析**：统计独立设备数
-- 🔄 **会话管理**：跨标签页的会话关联
+- 🔐 **Login Security**: Detect abnormal login behavior
+- 🛡️ **Risk Control**: Identify malicious devices and fraudulent activities
+- 📊 **User Analytics**: Count unique devices
+- 🔄 **Session Management**: Cross-tab session correlation
 
-## 许可证
+## License
 
 MIT License
 
-## 支持
+## Support
 
-如有问题或建议，请联系 DigitalSee 团队。
+For issues or suggestions, please visit [GitHub Issues](https://github.com/gangdai/fingerprint/issues).
