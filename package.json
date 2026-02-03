@@ -1,6 +1,6 @@
 {
   "name": "@gangdai/fingerprint",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lightweight, zero-dependency browser fingerprint collection library with TypeScript support",
   "keywords": [
     "fingerprint",
