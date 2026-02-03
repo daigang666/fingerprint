@@ -121,7 +121,7 @@ interface FingerprintResult {
 **参数：**
 ```typescript
 interface FingerprintConfig {
-  cacheExpiry?: number;        // 缓存过期时间（毫秒），默认 30 天
+  cacheExpiry?: number;        // 缓存过期时间（毫秒），默认 20 年
   enableIndexedDB?: boolean;   // 是否启用 IndexedDB，默认 true
   storageKeyPrefix?: string;   // 存储键名前缀，默认 'df'
   version?: number;            // 版本号，默认 1
