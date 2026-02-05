@@ -22,9 +22,8 @@ export class SystemCollector implements ICollector {
       components.push(`timezone:${Intl.DateTimeFormat().resolvedOptions().timeZone}`);
       components.push(`timezoneOffset:${new Date().getTimezoneOffset()}`);
 
-      // 语言设置
+      // 语言设置（只使用主语言，navigator.languages 在无痕模式下会被截断）
       components.push(`language:${navigator.language}`);
-      components.push(`languages:${(navigator.languages || []).join(',')}`);
 
       // 硬件并发数（CPU核心数）
       components.push(`hardwareConcurrency:${navigator.hardwareConcurrency || 'unknown'}`);

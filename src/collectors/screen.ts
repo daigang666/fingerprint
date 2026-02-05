@@ -9,17 +9,31 @@ import { CollectorName } from '../constants';
 export class ScreenCollector implements ICollector {
   readonly name = CollectorName.Screen;
 
+  /**
+   * 检测是否为 Safari 17+
+   * Safari 17+ 在无痕模式下会返回窗口尺寸而非屏幕分辨率
+   */
+  private isSafari17Plus(): boolean {
+    const ua = navigator.userAgent;
+    const safariMatch = ua.match(/Version\/(\d+).*Safari/);
+    return !!(safariMatch && parseInt(safariMatch[1], 10) >= 17);
+  }
+
   async collect(_config?: CollectorConfig): Promise<CollectorResult> {
     try {
       const components: string[] = [];
+      const isSafari17Plus = this.isSafari17Plus();
 
-      // 屏幕分辨率
-      components.push(`width:${screen.width}`);
-      components.push(`height:${screen.height}`);
+      // Safari 17+ 无痕模式会返回窗口尺寸，跳过这些不稳定的属性
+      if (!isSafari17Plus) {
+        // 屏幕分辨率
+        components.push(`width:${screen.width}`);
+        components.push(`height:${screen.height}`);
 
-      // 可用区域
-      components.push(`availWidth:${screen.availWidth}`);
-      components.push(`availHeight:${screen.availHeight}`);
+        // 可用区域
+        components.push(`availWidth:${screen.availWidth}`);
+        components.push(`availHeight:${screen.availHeight}`);
+      }
 
       // 色深
       components.push(`colorDepth:${screen.colorDepth}`);

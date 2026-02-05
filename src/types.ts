@@ -13,6 +13,38 @@ export interface FingerprintResult {
   timestamp: number;
   /** 过期时间戳 */
   expiresAt: number;
+  /** 调试信息（仅在 debug 模式下返回） */
+  debug?: DebugInfo;
+}
+
+/** 调试信息 */
+export interface DebugInfo {
+  /** 采集耗时（毫秒） */
+  duration: number;
+  /** 各采集器的详细结果 */
+  collectors: CollectorDebugInfo[];
+  /** 原始数据（用于哈希的拼接字符串） */
+  rawData: string;
+  /** 浏览器 User-Agent */
+  userAgent: string;
+}
+
+/** 采集器调试信息 */
+export interface CollectorDebugInfo {
+  /** 采集器名称 */
+  name: string;
+  /** 是否成功 */
+  success: boolean;
+  /** 采集耗时（毫秒） */
+  duration: number;
+  /** 原始值（截断显示） */
+  value: string;
+  /** 原始值长度 */
+  valueLength: number;
+  /** 原始值的哈希（用于对比） */
+  valueHash: string;
+  /** 错误信息 */
+  error?: string;
 }
 
 /** 采集器结果 */
@@ -82,4 +114,10 @@ export interface FingerprintConfig {
    * 注意：这不符合设备指纹的标准定义，仅用于特殊业务场景。
    */
   strictBrowserMode?: boolean;
+  /**
+   * 调试模式，默认false
+   * 启用后会在返回结果中包含详细的调试信息，
+   * 包括各采集器的耗时、原始值、哈希值等。
+   */
+  debug?: boolean;
 }

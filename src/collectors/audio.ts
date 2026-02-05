@@ -2,6 +2,7 @@
  * Audio 指纹采集器
  * @description 通过 OfflineAudioContext 生成音频信号，不同设备的音频处理有细微差异
  * @note 使用 OfflineAudioContext 替代已废弃的 ScriptProcessorNode，更加现代化且性能更好
+ * 参考 FingerprintJS 的噪声检测策略：检测已知会添加噪声的浏览器
  */
 
 import { CollectorResult, ICollector, CollectorConfig } from '../types';
@@ -10,8 +11,40 @@ import { CollectorName } from '../constants';
 export class AudioCollector implements ICollector {
   readonly name = CollectorName.Audio;
 
+  /**
+   * 检测是否为已知会添加音频噪声的浏览器
+   * Safari 17+ 和 Samsung Internet 26+ 在隐私模式下会添加噪声
+   */
+  private isKnownNoisyBrowser(): boolean {
+    const ua = navigator.userAgent;
+
+    // 检测 Safari 17+
+    const safariMatch = ua.match(/Version\/(\d+).*Safari/);
+    if (safariMatch && parseInt(safariMatch[1], 10) >= 17) {
+      return true;
+    }
+
+    // 检测 Samsung Internet 26+
+    const samsungMatch = ua.match(/SamsungBrowser\/(\d+)/);
+    if (samsungMatch && parseInt(samsungMatch[1], 10) >= 26) {
+      return true;
+    }
+
+    return false;
+  }
+
   async collect(_config?: CollectorConfig): Promise<CollectorResult> {
     try {
+      // 检测已知会添加噪声的浏览器
+      if (this.isKnownNoisyBrowser()) {
+        return {
+          name: this.name,
+          value: '',
+          success: false,
+          error: 'Browser known for audio anti-fingerprinting',
+        };
+      }
+
       // 检查 OfflineAudioContext 支持
       const OfflineAudioContextClass =
         window.OfflineAudioContext || (window as any).webkitOfflineAudioContext;
