@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@gangdai/fingerprint - 浏览器设备指纹库</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="#" class="logo">@gangdai/fingerprint</a>
+      <div class="nav-links">
+        <a href="#features">特性</a>
+        <a href="#install">安装</a>
+        <a href="#usage">使用</a>
+        <a href="#api">API</a>
+        <a href="#demo">在线测试</a>
+        <a href="https://github.com/gangdai/fingerprint" target="_blank">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero 区域 -->
+  <header class="hero">
+    <div class="container">
+      <h1>@gangdai/fingerprint</h1>
+      <p class="tagline">轻量级、零依赖的浏览器设备指纹采集库</p>
+      <div class="hero-badges">
+        <span class="badge">TypeScript</span>
+        <span class="badge">零依赖</span>
+        <span class="badge">ESM + CJS</span>
+        <span class="badge">&lt; 25KB</span>
+      </div>
+      <div class="hero-actions">
+        <a href="#demo" class="btn btn-primary">在线测试</a>
+        <a href="#install" class="btn btn-secondary">快速开始</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 特性 -->
+  <section id="features" class="section">
+    <div class="container">
+      <h2>核心特性</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>高精度指纹</h3>
+          <p>结合 Canvas、WebGL、Audio、屏幕、系统等多维度信息生成唯一设备标识</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💾</div>
+          <h3>智能缓存</h3>
+          <p>IndexedDB + LocalStorage 双层缓存，默认 20 年有效期，持久稳定</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <h3>轻量高效</h3>
+          <p>零依赖，打包体积小于 25KB，异步采集不阻塞主线程</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📦</div>
+          <h3>开箱即用</h3>
+          <p>简洁 API 设计，完整 TypeScript 类型支持，ESM/CJS 双格式</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3>兜底机制</h3>
+          <p>采集失败时自动生成 UUID 作为兜底标识，确保始终有返回值</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>灵活配置</h3>
+          <p>支持自定义缓存时间、存储前缀、严格浏览器模式等配置项</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 安装 -->
+  <section id="install" class="section section-alt">
+    <div class="container">
+      <h2>安装</h2>
+      <div class="install-options">
+        <div class="install-option">
+          <h4>pnpm (推荐)</h4>
+          <pre><code class="language-bash">pnpm add @gangdai/fingerprint</code></pre>
+        </div>
+        <div class="install-option">
+          <h4>npm</h4>
+          <pre><code class="language-bash">npm install @gangdai/fingerprint</code></pre>
+        </div>
+        <div class="install-option">
+          <h4>yarn</h4>
+          <pre><code class="language-bash">yarn add @gangdai/fingerprint</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 使用示例 -->
+  <section id="usage" class="section">
+    <div class="container">
+      <h2>使用示例</h2>
+
+      <div class="usage-block">
+        <h3>基础用法</h3>
+        <pre><code class="language-typescript">import { getFingerprint, getDeviceFingerprint } from '@gangdai/fingerprint';
+
+// 方式1: 获取指纹字符串
+const fingerprint = await getFingerprint();
+console.log(fingerprint); // "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+
+// 方式2: 获取完整结果
+const result = await getDeviceFingerprint();
+console.log(result.fingerprint); // 32位 MD5 哈希
+console.log(result.isFallback);  // 是否为兜底 UUID
+console.log(result.timestamp);   // 采集时间戳
+console.log(result.expiresAt);   // 过期时间戳</code></pre>
+      </div>
+
+      <div class="usage-block">
+        <h3>自定义配置</h3>
+        <pre><code class="language-typescript">import { initFingerprint, getDeviceFingerprint } from '@gangdai/fingerprint';
+
+// 初始化配置
+initFingerprint({
+  cacheExpiry: 7 * 24 * 60 * 60 * 1000,  // 缓存 7 天
+  enableIndexedDB: true,                  // 启用 IndexedDB
+  storageKeyPrefix: 'myapp',              // 自定义存储前缀
+  strictBrowserMode: false,               // 严格浏览器模式（区分同设备不同浏览器）
+});
+
+const result = await getDeviceFingerprint();</code></pre>
+      </div>
+
+      <div class="usage-block">
+        <h3>在 HTTP 请求中使用</h3>
+        <pre><code class="language-typescript">import { getFingerprint, HTTP_HEADER_NAME } from '@gangdai/fingerprint';
+import axios from 'axios';
+
+const fingerprint = await getFingerprint();
+
+// 在请求头中携带指纹
+axios.post('/api/login', data, {
+  headers: {
+    [HTTP_HEADER_NAME]: fingerprint,  // 'X-Device-Fingerprint'
+  },
+});</code></pre>
+      </div>
+
+      <div class="usage-block">
+        <h3>刷新和清除</h3>
+        <pre><code class="language-typescript">import { refreshFingerprint, clearFingerprint } from '@gangdai/fingerprint';
+
+// 强制重新采集指纹（忽略缓存）
+const newResult = await refreshFingerprint();
+
+// 清除缓存的指纹数据
+await clearFingerprint();</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- API 文档 -->
+  <section id="api" class="section section-alt">
+    <div class="container">
+      <h2>API 文档</h2>
+
+      <div class="api-section">
+        <h3>函数</h3>
+
+        <div class="api-item">
+          <h4><code>getFingerprint(): Promise&lt;string&gt;</code></h4>
+          <p>获取设备指纹字符串（简化版）。</p>
+          <div class="api-returns">
+            <strong>返回值：</strong> 32位 MD5 哈希字符串
+          </div>
+        </div>
+
+        <div class="api-item">
+          <h4><code>getDeviceFingerprint(): Promise&lt;FingerprintResult&gt;</code></h4>
+          <p>获取完整的设备指纹信息。</p>
+          <div class="api-returns">
+            <strong>返回值：</strong>
+            <pre><code class="language-typescript">interface FingerprintResult {
+  fingerprint: string;  // 32位 MD5 哈希值
+  isFallback: boolean;  // 是否为兜底 UUID
+  timestamp: number;    // 采集时间戳
+  expiresAt: number;    // 过期时间戳
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="api-item">
+          <h4><code>initFingerprint(config?: FingerprintConfig): void</code></h4>
+          <p>初始化指纹模块配置（可选，不调用则使用默认配置）。</p>
+        </div>
+
+        <div class="api-item">
+          <h4><code>refreshFingerprint(): Promise&lt;FingerprintResult&gt;</code></h4>
+          <p>强制刷新指纹（重新采集，忽略缓存）。</p>
+        </div>
+
+        <div class="api-item">
+          <h4><code>clearFingerprint(): Promise&lt;void&gt;</code></h4>
+          <p>清除缓存的指纹数据。</p>
+        </div>
+
+        <div class="api-item">
+          <h4><code>getHeaderName(): string</code></h4>
+          <p>获取 HTTP Header 名称，返回 <code>'X-Device-Fingerprint'</code>。</p>
+        </div>
+      </div>
+
+      <div class="api-section">
+        <h3>配置项 (FingerprintConfig)</h3>
+
+        <table class="api-table">
+          <thead>
+            <tr>
+              <th>参数</th>
+              <th>类型</th>
+              <th>默认值</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>cacheExpiry</code></td>
+              <td><code>number</code></td>
+              <td>20年 (ms)</td>
+              <td>缓存过期时间（毫秒）</td>
+            </tr>
+            <tr>
+              <td><code>enableIndexedDB</code></td>
+              <td><code>boolean</code></td>
+              <td><code>true</code></td>
+              <td>是否启用 IndexedDB 存储</td>
+            </tr>
+            <tr>
+              <td><code>storageKeyPrefix</code></td>
+              <td><code>string</code></td>
+              <td><code>'df'</code></td>
+              <td>存储键名前缀</td>
+            </tr>
+            <tr>
+              <td><code>version</code></td>
+              <td><code>number</code></td>
+              <td><code>1</code></td>
+              <td>版本号（用于后续升级）</td>
+            </tr>
+            <tr>
+              <td><code>strictBrowserMode</code></td>
+              <td><code>boolean</code></td>
+              <td><code>false</code></td>
+              <td>严格浏览器模式，启用后同一设备不同浏览器会产生不同指纹</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="api-section">
+        <h3>常量</h3>
+        <div class="api-item">
+          <h4><code>HTTP_HEADER_NAME</code></h4>
+          <p>HTTP 请求头名称常量，值为 <code>'X-Device-Fingerprint'</code>。</p>
+        </div>
+      </div>
+
+      <div class="api-section">
+        <h3>采集维度</h3>
+        <table class="api-table">
+          <thead>
+            <tr>
+              <th>维度</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Canvas</td>
+              <td>Canvas 2D 渲染特征，不同设备的字体渲染、抗锯齿等有差异</td>
+            </tr>
+            <tr>
+              <td>WebGL</td>
+              <td>GPU 渲染器信息、扩展列表、最大纹理尺寸等</td>
+            </tr>
+            <tr>
+              <td>Audio</td>
+              <td>音频处理特征，通过 OfflineAudioContext 生成音频信号</td>
+            </tr>
+            <tr>
+              <td>Screen</td>
+              <td>屏幕分辨率、色深、像素比、触摸支持等</td>
+            </tr>
+            <tr>
+              <td>System</td>
+              <td>时区、语言、CPU 核心数、内存、平台信息等</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 在线测试 -->
+  <section id="demo" class="section">
+    <div class="container">
+      <h2>在线测试</h2>
+      <p class="section-desc">点击下方按钮测试指纹采集功能，查看当前设备的指纹信息。</p>
+
+      <div class="demo-panel">
+        <div class="demo-config">
+          <h4>配置选项</h4>
+          <div class="config-item">
+            <label>
+              <input type="checkbox" id="config-indexeddb" checked>
+              启用 IndexedDB
+            </label>
+          </div>
+          <div class="config-item">
+            <label>
+              <input type="checkbox" id="config-strict">
+              严格浏览器模式
+            </label>
+            <span class="config-hint">启用后同一设备不同浏览器产生不同指纹</span>
+          </div>
+          <div class="config-item">
+            <label>存储前缀：</label>
+            <input type="text" id="config-prefix" value="df" class="config-input">
+          </div>
+        </div>
+
+        <div class="demo-actions">
+          <button id="btn-generate" class="btn btn-primary">生成指纹</button>
+          <button id="btn-refresh" class="btn btn-secondary">强制刷新</button>
+          <button id="btn-clear" class="btn btn-danger">清除缓存</button>
+        </div>
+
+        <div class="demo-result" id="demo-result">
+          <div class="result-placeholder">点击"生成指纹"按钮开始测试</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 浏览器兼容性 -->
+  <section id="compatibility" class="section section-alt">
+    <div class="container">
+      <h2>浏览器兼容性</h2>
+      <div class="compat-grid">
+        <div class="compat-item">
+          <div class="compat-icon">🌐</div>
+          <div class="compat-name">Chrome</div>
+          <div class="compat-version">60+</div>
+        </div>
+        <div class="compat-item">
+          <div class="compat-icon">🦊</div>
+          <div class="compat-name">Firefox</div>
+          <div class="compat-version">55+</div>
+        </div>
+        <div class="compat-item">
+          <div class="compat-icon">🧭</div>
+          <div class="compat-name">Safari</div>
+          <div class="compat-version">11+</div>
+        </div>
+        <div class="compat-item">
+          <div class="compat-icon">📘</div>
+          <div class="compat-name">Edge</div>
+          <div class="compat-version">79+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 注意事项 -->
+  <section id="notes" class="section">
+    <div class="container">
+      <h2>注意事项</h2>
+      <div class="notes-list">
+        <div class="note-item">
+          <div class="note-icon">⚖️</div>
+          <div class="note-content">
+            <h4>隐私合规</h4>
+            <p>使用前请确保符合当地隐私法规（如 GDPR、CCPA），建议在隐私政策中说明设备指纹的使用。</p>
+          </div>
+        </div>
+        <div class="note-item">
+          <div class="note-icon">🔐</div>
+          <div class="note-content">
+            <h4>非唯一标识</h4>
+            <p>设备指纹不应作为唯一身份标识，建议与其他认证方式结合使用。</p>
+          </div>
+        </div>
+        <div class="note-item">
+          <div class="note-icon">🗑️</div>
+          <div class="note-content">
+            <h4>缓存清除</h4>
+            <p>用户清除浏览器数据会导致指纹重新生成，这是正常行为。</p>
+          </div>
+        </div>
+        <div class="note-item">
+          <div class="note-icon">🖥️</div>
+          <div class="note-content">
+            <h4>同设备相同指纹</h4>
+            <p>默认情况下，同一设备上不同浏览器（如 Chrome 和钉钉内置浏览器）可能产生相同指纹，这是设备指纹的正确行为。如需区分，请启用 <code>strictBrowserMode</code>。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>MIT License © 2024 @gangdai/fingerprint</p>
+      <p>
+        <a href="https://github.com/gangdai/fingerprint">GitHub</a> ·
+        <a href="https://www.npmjs.com/package/@gangdai/fingerprint">npm</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <!-- 使用打包后的指纹库 -->
+  <script src="index.browser.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -23,6 +23,18 @@ npm install @gangdai/fingerprint
 yarn add @gangdai/fingerprint
 ```
 
+### Browser (Script Tag)
+
+```html
+<script src="dist/index.browser.js"></script>
+<script>
+  // 全局变量 Fingerprint 可用
+  Fingerprint.getFingerprint().then(fp => {
+    console.log(fp);
+  });
+</script>
+```
+
 ## Quick Start
 
 ### Basic Usage
