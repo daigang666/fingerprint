@@ -4,13 +4,13 @@
  * @note 使用 OfflineAudioContext 替代已废弃的 ScriptProcessorNode，更加现代化且性能更好
  */
 
-import { CollectorResult, ICollector } from '../types';
+import { CollectorResult, ICollector, CollectorConfig } from '../types';
 import { CollectorName } from '../constants';
 
 export class AudioCollector implements ICollector {
   readonly name = CollectorName.Audio;
 
-  async collect(): Promise<CollectorResult> {
+  async collect(_config?: CollectorConfig): Promise<CollectorResult> {
     try {
       // 检查 OfflineAudioContext 支持
       const OfflineAudioContextClass =

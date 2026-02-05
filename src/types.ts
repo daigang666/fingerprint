@@ -41,12 +41,18 @@ export interface CachedFingerprint {
   version: number;
 }
 
+/** 采集器配置 */
+export interface CollectorConfig {
+  /** 严格浏览器模式 */
+  strictBrowserMode?: boolean;
+}
+
 /** 采集器接口 */
 export interface ICollector {
   /** 采集器名称 */
   readonly name: string;
   /** 执行采集 */
-  collect(): Promise<CollectorResult>;
+  collect(config?: CollectorConfig): Promise<CollectorResult>;
 }
 
 /** 存储接口 */
@@ -69,4 +75,11 @@ export interface FingerprintConfig {
   storageKeyPrefix?: string;
   /** 当前版本号 */
   version?: number;
+  /**
+   * 严格浏览器模式，默认false
+   * 启用后会在指纹计算中加入浏览器特征（User-Agent），
+   * 使得同一设备上不同浏览器产生不同指纹。
+   * 注意：这不符合设备指纹的标准定义，仅用于特殊业务场景。
+   */
+  strictBrowserMode?: boolean;
 }

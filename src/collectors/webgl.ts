@@ -3,13 +3,13 @@
  * @description 通过WebGL获取GPU渲染器信息，不同显卡有不同的标识
  */
 
-import { CollectorResult, ICollector } from '../types';
+import { CollectorResult, ICollector, CollectorConfig } from '../types';
 import { CollectorName } from '../constants';
 
 export class WebGLCollector implements ICollector {
   readonly name = CollectorName.WebGL;
 
-  async collect(): Promise<CollectorResult> {
+  async collect(_config?: CollectorConfig): Promise<CollectorResult> {
     try {
       const canvas = document.createElement('canvas');
       const gl =

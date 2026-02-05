@@ -8,7 +8,8 @@ import {
   CachedFingerprint,
   FingerprintConfig,
   ICollector,
-  IStorage
+  IStorage,
+  CollectorConfig
 } from '../types';
 import { DEFAULT_CACHE_EXPIRY, CURRENT_VERSION } from '../constants';
 import { md5, generateUUID } from './hash';
@@ -29,6 +30,7 @@ export class FingerprintManager {
       enableIndexedDB: config.enableIndexedDB ?? true,
       storageKeyPrefix: config.storageKeyPrefix ?? 'df',
       version: config.version ?? CURRENT_VERSION,
+      strictBrowserMode: config.strictBrowserMode ?? false,
     };
 
     this.collectors = createCollectors();
@@ -117,9 +119,14 @@ export class FingerprintManager {
    */
   private async collect(): Promise<{ fingerprint: string; isFallback: boolean }> {
     try {
+      // 采集器配置
+      const collectorConfig: CollectorConfig = {
+        strictBrowserMode: this.config.strictBrowserMode,
+      };
+
       // 并行执行所有采集器
       const results = await Promise.all(
-        this.collectors.map((collector) => collector.collect())
+        this.collectors.map((collector) => collector.collect(collectorConfig))
       );
 
       // 过滤成功的结果

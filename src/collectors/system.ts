@@ -3,15 +3,20 @@
  * @description 采集时区、语言、硬件并发数、内存等系统级信息
  */
 
-import { CollectorResult, ICollector } from '../types';
+import { CollectorResult, ICollector, CollectorConfig } from '../types';
 import { CollectorName } from '../constants';
 
 export class SystemCollector implements ICollector {
   readonly name = CollectorName.System;
 
-  async collect(): Promise<CollectorResult> {
+  async collect(config?: CollectorConfig): Promise<CollectorResult> {
     try {
       const components: string[] = [];
+
+      // 严格浏览器模式：加入 User-Agent 以区分不同浏览器
+      if (config?.strictBrowserMode) {
+        components.push(`userAgent:${navigator.userAgent}`);
+      }
 
       // 时区
       components.push(`timezone:${Intl.DateTimeFormat().resolvedOptions().timeZone}`);

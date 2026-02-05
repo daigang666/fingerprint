@@ -3,13 +3,13 @@
  * @description 通过Canvas绘制特定图形，利用不同设备的渲染差异生成指纹
  */
 
-import { CollectorResult, ICollector } from '../types';
+import { CollectorResult, ICollector, CollectorConfig } from '../types';
 import { CollectorName } from '../constants';
 
 export class CanvasCollector implements ICollector {
   readonly name = CollectorName.Canvas;
 
-  async collect(): Promise<CollectorResult> {
+  async collect(_config?: CollectorConfig): Promise<CollectorResult> {
     try {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');

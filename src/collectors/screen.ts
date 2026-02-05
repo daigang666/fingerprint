@@ -3,13 +3,13 @@
  * @description 采集屏幕分辨率、色深、像素比等信息
  */
 
-import { CollectorResult, ICollector } from '../types';
+import { CollectorResult, ICollector, CollectorConfig } from '../types';
 import { CollectorName } from '../constants';
 
 export class ScreenCollector implements ICollector {
   readonly name = CollectorName.Screen;
 
-  async collect(): Promise<CollectorResult> {
+  async collect(_config?: CollectorConfig): Promise<CollectorResult> {
     try {
       const components: string[] = [];
 
